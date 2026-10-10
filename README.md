@@ -2,12 +2,16 @@
 
 Spring Boot 3 · Spring Data JPA (Hibernate) · MySQL · Thymeleaf
 
-   ## Screenshots
+ ## Screenshots
 
-   ![Students List](screenshots/students-list.png)
-   ![Add Student](screenshots/add-student.png)
-   ![Reports](screenshots/reports.png)
+### Students List
+![Students List](Image/Screenshot%202026-10-11%20000709.png)
 
+### Add Student
+![Add Student](Image/Screenshot%202026-10-11%20000723.png)
+
+### Class Performance Report
+![Reports](Image/Screenshot%202026-10-11%20000732.png)
    
 ## Features
 - CRUD for student details with validation and duplicate roll-number check
