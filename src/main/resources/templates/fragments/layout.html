@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} + ' | Student Management'">Student Management</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:fragment="nav">
+  <span class="brand">🎓 Student Management</span>
+  <a th:href="@{/students}">Students</a>
+  <a th:href="@{/students/new}">Add Student</a>
+  <a th:href="@{/reports}">Reports</a>
+</nav>
+<div th:fragment="flash">
+  <div class="alert success" th:if="${success}" th:text="${success}"></div>
+  <div class="alert error" th:if="${error}" th:text="${error}"></div>
+</div>
+</body>
+</html>

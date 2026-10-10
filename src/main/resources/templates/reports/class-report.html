@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Reports')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<div class="container">
+  <div class="stats">
+    <div class="stat"><b th:text="${total}">0</b>Students</div>
+    <div class="stat"><b th:text="${passed}">0</b>Passed</div>
+    <div class="stat"><b th:text="${#numbers.formatDecimal(average,1,2)} + '%'">0%</b>Class Average</div>
+  </div>
+  <div class="card">
+    <div class="toolbar">
+      <h2 style="margin:0">Class Performance Report</h2>
+      <a class="btn spacer" th:href="@{/reports/export}">⬇ Export CSV</a>
+      <button class="btn btn-light noprint" onclick="window.print()">Print</button>
+    </div>
+    <table>
+      <thead><tr><th>Rank</th><th>Roll No</th><th>Name</th><th>Course</th><th>Total</th><th>%</th><th>Grade</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr th:each="s, it : ${ranked}">
+          <td th:text="${it.count}"></td>
+          <td th:text="${s.rollNo}"></td>
+          <td><a th:href="@{/students/{id}/report(id=${s.id})}" th:text="${s.name}"></a></td>
+          <td th:text="${s.course}"></td>
+          <td th:text="${s.totalObtained} + '/' + ${s.totalMax}"></td>
+          <td th:text="${#numbers.formatDecimal(s.percentage,1,2)}"></td>
+          <td th:text="${s.grade}"></td>
+          <td>
+            <span class="badge na" th:if="${s.marks.isEmpty()}">N/A</span>
+            <span class="badge pass" th:if="${s.passed}">PASS</span>
+            <span class="badge fail" th:if="${!s.marks.isEmpty() and !s.passed}">FAIL</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

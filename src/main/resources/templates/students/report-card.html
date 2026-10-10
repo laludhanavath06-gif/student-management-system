@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Report Card')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<div class="container">
+  <div class="card report">
+    <h1>Student Report Card</h1>
+    <div class="grid2">
+      <p><b>Name:</b> <span th:text="${student.name}"></span></p>
+      <p><b>Roll No:</b> <span th:text="${student.rollNo}"></span></p>
+      <p><b>Course:</b> <span th:text="${student.course}"></span></p>
+      <p><b>Email:</b> <span th:text="${student.email}"></span></p>
+    </div>
+    <table>
+      <thead><tr><th>Subject</th><th>Obtained</th><th>Maximum</th><th>%</th></tr></thead>
+      <tbody>
+        <tr th:each="m : ${student.marks}">
+          <td th:text="${m.subject}"></td><td th:text="${m.obtained}"></td><td th:text="${m.maxMarks}"></td>
+          <td th:text="${#numbers.formatDecimal(m.obtained * 100.0 / m.maxMarks,1,1)}"></td>
+        </tr>
+        <tr th:if="${student.marks.isEmpty()}"><td colspan="4" class="muted">No marks available.</td></tr>
+      </tbody>
+    </table>
+    <h2 style="margin-top:20px" th:unless="${student.marks.isEmpty()}">
+      Total: <span th:text="${student.totalObtained} + ' / ' + ${student.totalMax}"></span> &nbsp;
+      (<span th:text="${#numbers.formatDecimal(student.percentage,1,2)}"></span>%) &nbsp;
+      Grade: <span th:text="${student.grade}"></span> &nbsp;
+      <span class="badge" th:classappend="${student.passed} ? 'pass' : 'fail'" th:text="${student.passed} ? 'PASS' : 'FAIL'"></span>
+    </h2>
+  </div>
+  <div class="noprint" style="text-align:center">
+    <button class="btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+    <a class="btn btn-light" th:href="@{/students/{id}(id=${student.id})}">Back</a>
+  </div>
+</div>
+</body>
+</html>

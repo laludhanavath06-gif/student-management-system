@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Students')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<div class="container">
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <div class="stats">
+    <div class="stat"><b th:text="${total}">0</b>Total Students</div>
+    <div class="stat"><b th:text="${students.size()}">0</b>Shown</div>
+  </div>
+  <div class="card">
+    <div class="toolbar">
+      <form th:action="@{/students}" method="get" class="row" style="width:100%">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Search by name, roll no or course">
+        <button class="btn" type="submit">Search</button>
+        <a class="btn btn-light" th:href="@{/students}">Reset</a>
+        <a class="btn btn-ok spacer" th:href="@{/students/new}" style="white-space:nowrap">+ Add Student</a>
+      </form>
+    </div>
+    <table>
+      <thead><tr><th>Roll No</th><th>Name</th><th>Course</th><th>Email</th><th>%</th><th>Grade</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr th:each="s : ${students}">
+          <td th:text="${s.rollNo}"></td>
+          <td><a th:href="@{/students/{id}(id=${s.id})}" th:text="${s.name}"></a></td>
+          <td th:text="${s.course}"></td>
+          <td th:text="${s.email}"></td>
+          <td th:text="${s.marks.isEmpty()} ? '-' : ${#numbers.formatDecimal(s.percentage,1,2)}"></td>
+          <td th:text="${s.grade}"></td>
+          <td>
+            <a class="btn btn-sm" th:href="@{/students/{id}(id=${s.id})}">Marks</a>
+            <a class="btn btn-sm btn-light" th:href="@{/students/edit/{id}(id=${s.id})}">Edit</a>
+            <form class="inline" th:action="@{/students/delete/{id}(id=${s.id})}" method="post"
+                  onsubmit="return confirm('Delete this student and all marks?')">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${students.isEmpty()}"><td colspan="7" class="muted">No students found.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

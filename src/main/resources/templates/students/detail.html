@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Student Marks')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<div class="container">
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <div class="card">
+    <div class="toolbar">
+      <h2 style="margin:0" th:text="${student.name}">Name</h2>
+      <a class="btn spacer" th:href="@{/students/{id}/report(id=${student.id})}">View Report Card</a>
+      <a class="btn btn-light" th:href="@{/students}">Back</a>
+    </div>
+    <p class="muted">
+      Roll No: <b th:text="${student.rollNo}"></b> &nbsp;|&nbsp;
+      Course: <b th:text="${student.course}"></b> &nbsp;|&nbsp;
+      <span th:text="${student.email}"></span>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Enter Marks</h2>
+    <form th:action="@{/students/{id}/marks(id=${student.id})}" th:object="${mark}" method="post">
+      <div class="grid2">
+        <div>
+          <label>Subject</label>
+          <input type="text" th:field="*{subject}">
+          <div class="err" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></div>
+        </div>
+        <div>
+          <label>Marks Obtained</label>
+          <input type="number" th:field="*{obtained}">
+          <div class="err" th:if="${#fields.hasErrors('obtained')}" th:errors="*{obtained}"></div>
+        </div>
+        <div>
+          <label>Maximum Marks</label>
+          <input type="number" th:field="*{maxMarks}">
+          <div class="err" th:if="${#fields.hasErrors('maxMarks')}" th:errors="*{maxMarks}"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px"><button class="btn" type="submit">Add Marks</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Marks Summary</h2>
+    <table>
+      <thead><tr><th>Subject</th><th>Obtained</th><th>Max</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="m : ${student.marks}">
+          <td th:text="${m.subject}"></td>
+          <td th:text="${m.obtained}"></td>
+          <td th:text="${m.maxMarks}"></td>
+          <td>
+            <form class="inline" th:action="@{/students/{sid}/marks/{mid}/delete(sid=${student.id},mid=${m.id})}" method="post">
+              <button class="btn btn-sm btn-danger" type="submit">Remove</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${student.marks.isEmpty()}"><td colspan="4" class="muted">No marks entered yet.</td></tr>
+      </tbody>
+      <tfoot th:unless="${student.marks.isEmpty()}">
+        <tr><th>Total</th><th th:text="${student.totalObtained}"></th><th th:text="${student.totalMax}"></th>
+          <th th:text="${#numbers.formatDecimal(student.percentage,1,2)} + '% (' + ${student.grade} + ')'"></th></tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+</body>
+</html>

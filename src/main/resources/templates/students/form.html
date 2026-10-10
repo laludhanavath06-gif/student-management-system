@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${title})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<div class="container" style="max-width:640px">
+  <div class="card">
+    <h2 th:text="${title}">Student</h2>
+    <form th:action="@{/students/save}" th:object="${student}" method="post">
+      <input type="hidden" th:field="*{id}">
+      <label>Roll Number</label>
+      <input type="text" th:field="*{rollNo}">
+      <div class="err" th:if="${#fields.hasErrors('rollNo')}" th:errors="*{rollNo}"></div>
+      <label>Full Name</label>
+      <input type="text" th:field="*{name}">
+      <div class="err" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+      <label>Email</label>
+      <input type="text" th:field="*{email}">
+      <div class="err" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+      <label>Course</label>
+      <input type="text" th:field="*{course}" placeholder="e.g. B.Tech CSE">
+      <div class="err" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></div>
+      <label>Phone</label>
+      <input type="text" th:field="*{phone}">
+      <div style="margin-top:20px">
+        <button class="btn" type="submit">Save</button>
+        <a class="btn btn-light" th:href="@{/students}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
